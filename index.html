@@ -69,25 +69,32 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="logBtn">Console Log</button>
+      <button id="errBtn">Console Error</button>
+      <button id="cntBtn">Console Count</button>
+      <button id="warnBtn">Console Warn</button>
+      <button id="assertBtn">Console Assert</button>
+      <button id="clearBtn">Console Clear</button>
+      <button id="dirBtn">Console Dir</button>
+      <button id="dirxBtn">Console dirxml</button>
+      <button id="gstartBtn">Console Group Start</button>
+      <button id="gendBtn">Console Group End</button>
+      <button id="tblBtn">Console Table</button>
+      <button id="startTimer">Start Timer</button>
+      <button id="endTimer">End Timer</button>
+      <button id="traceBtn">Console Trace</button>
+      <button id="globalError">Trigger a Global Error</button>
     </section>
   </main>
 
   <script>
+    class emptyError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "Empty Error";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +102,97 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        if (firstNum == "") {
+          throw new emptyError("First box empty");
+        }
+        if (secondNum == "") {
+          throw new emptyError("Second box empty");
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch (err) {
+        console.log("Encountered error of type");
+        console.log(err);
+      }
+      finally {
+        console.log("Successful use of try...catch");
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let btn1 = document.querySelector('#logBtn');
+    btn1.addEventListener('click', () => {
+      console.log("Log message");
+    });
+    let btn2 = document.querySelector('#errBtn');
+    btn2.addEventListener('click', () => {
+      console.error("Error message");
+    });
+    let btn3 = document.querySelector('#cntBtn');
+    let i = 0;
+    btn3.addEventListener('click', () => {
+      i++;
+      console.log("console button" , i);
+    });
+    let btn4 = document.querySelector('#warnBtn');
+    btn4.addEventListener('click', () => {
+      console.warn("Warning message");
+    });
+    let btn5 = document.querySelector('#assertBtn');
+    btn5.addEventListener('click', () => {
+      let num = 11;
+      let errMsg = "This number is not divisible by 5";
+      console.assert(num % 5 === 0, '%o', {num, errMsg});
+    });
+    let btn6 = document.querySelector('#clearBtn');
+    btn6.addEventListener('click', () => {
+      console.clear();
+    });
+    let btn7 = document.querySelector('#dirBtn');
+    let obj1 = {
+        name: "Pratyush",
+        class: "CSE110",
+        age: "20",
+      };
+    btn7.addEventListener('click', () => {
+      console.dir(obj1);
+    });
+    let btn8 = document.querySelector('#dirxBtn');
+    btn8.addEventListener('click', () => {
+      console.dirxml(obj1);
+    });
+    let btn9 = document.querySelector('#gstartBtn');
+    btn9.addEventListener('click', () => {
+      console.group("Next level");
+    });
+    let btn10 = document.querySelector('#gendBtn');
+    btn10.addEventListener('click', () => {
+      console.groupEnd();
+    });
+    let btn11 = document.querySelector('#tblBtn');
+    btn11.addEventListener('click', () => {
+      console.table(["United States", "Germany", "United Kingdom", "China", "India", "Canada"]);
+    });
+    let btn12 = document.querySelector('#startTimer');
+    btn12.addEventListener('click', () => {
+      console.time("Start timer");
+    });
+    let btn13 = document.querySelector('#endTimer');
+    btn13.addEventListener('click', () => {
+      console.timeEnd("Start timer");
+    });
+    let btn14 = document.querySelector('#traceBtn');
+    btn14.addEventListener('click', () => {
+      console.trace();
+    });
+    let btn15 = document.querySelector('#globalError');
+    btn15.addEventListener('click', () => {
+      console.error("Encountered an error");
+    });
   </script>
 </body>
 
